@@ -105,6 +105,7 @@ namespace Riptide.Demos.DedicatedClient
             //On envoie les données (username..). On peut très bien le faire avec un bouton sur un canva
             Message message = Message.Create(MessageSendMode.reliable, (ushort) ClientToServerId.playerConnect);
             message.AddString("MyPlayer");
+            message.AddString("room-01");
             Singleton.Client.Send(message);
             
         }

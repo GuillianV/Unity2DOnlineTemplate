@@ -1,13 +1,14 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class GameLogic : MonoBehaviour
 {
-    
     #region Instance
+
     private static GameLogic _singleton;
     public static GameLogic Singleton
     {
-      
         get => _singleton;
         private set
         {
@@ -15,22 +16,28 @@ public class GameLogic : MonoBehaviour
                 _singleton = value;
             else if (_singleton != value)
             {
-                Debug.Log($"{nameof(GameLogic)} instance already exists, destroying duplicate!");
+                Debug.Log($"{nameof(GameLogic)} instance already exists, destroying object!");
                 Destroy(value);
             }
         }
     }
-        
+
     #endregion
-    
-    public GameObject PlayerPrefab => playerPrefab;
-    public int SideValue => sideValue;
 
-    [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
+    public GameObject PlayerPrefab => playerPrefab;
 
-    [Header("Parameters")] 
-     private int sideValue;
+    [SerializeField] private int maxPlayersInRoom;
+    public int MaxPlayersInRoom => maxPlayersInRoom;
+
+    [SerializeField] private int minPlayersInRoom;
+    public int MinPlayersInRoom => minPlayersInRoom;
+
+    [SerializeField] private bool canStartBeforeRoomIsFull;
+    public bool CanStartBeforeRoomIsFull => canStartBeforeRoomIsFull;
+
+    
+    
     
     #region Unity Events
 
@@ -39,15 +46,9 @@ public class GameLogic : MonoBehaviour
         Singleton = this;
     }
 
-
-    public void SetSideValue(int _sideValue)
-    {
-
-        this.sideValue = _sideValue;
-
-    }
-
     #endregion
+    
 
-  
+    
+
 }
