@@ -108,10 +108,8 @@ namespace Riptide.Demos.DedicatedServer
         private void PlayerLeft(object sender, ClientDisconnectedEventArgs e)
         {
             //Event for getting a player disconnected
-            if (Player.PlayersList.ContainsKey(e.Id))
-            {
-                Destroy(Player.PlayersList[e.Id].gameObject);
-            }
+           
+            //Disconnect Client for all rooms players
             
         }
         #endregion

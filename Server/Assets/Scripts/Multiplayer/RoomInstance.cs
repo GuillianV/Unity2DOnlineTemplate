@@ -71,7 +71,8 @@ public class RoomInstance : MonoBehaviour
 
         PlayerInstance playerInstance = roomInstance.rooms[roomId];
         playerInstance.CreateServerPlayerData(fromClientId, username);
-        
+       
+        /*
         
         //Pour le joueur, ajoute tous les joueurs
         foreach (PlayerData otherPlayerData in playerInstance.clients.Values)
@@ -93,7 +94,7 @@ public class RoomInstance : MonoBehaviour
             NetworkManager.Singleton.Server.SendToAll(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.startGame));
 
         }
-        
+        */
     }
     
     
