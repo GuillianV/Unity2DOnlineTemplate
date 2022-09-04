@@ -314,8 +314,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1229063970}
   - component: {fileID: 1229063969}
-  - component: {fileID: 1229063971}
   - component: {fileID: 1229063972}
+  - component: {fileID: 1229063971}
   m_Layer: 0
   m_Name: MultiplayerManager
   m_TagString: Untagged
@@ -377,7 +377,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 2491870692606353469, guid: 3c8a790e74acae145b5acf47f834ccc0, type: 3}
-  sideValue: 0
 --- !u!1 &1301023572
 GameObject:
   m_ObjectHideFlags: 0

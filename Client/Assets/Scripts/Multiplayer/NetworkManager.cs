@@ -67,7 +67,7 @@ namespace Riptide.Demos.DedicatedClient
             Client.Disconnected += DidDisconnect;
 
        
-
+            Connect();
         }
 
         private void FixedUpdate()

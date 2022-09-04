@@ -17,27 +17,28 @@ public class PlayerInstance : MonoBehaviour
 
 
     public string roomId;
-
-    public PlayerInstance(string _roomId)
-    {
-        this.roomId = _roomId;
-    }
-  
-
+    public bool roomStarted;
+    public bool isFull;
     
-      #region Local Methods
 
-    public void ConnectClientToPlayers(ushort playerId)
+    private void Awake()
     {
-     //   NetworkManager.Singleton.Server.SendToAll(AddSpawnData(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerConnected)));
+        if (clients == null)
+        {
+            clients = new Dictionary<ushort, PlayerData>();
+        }
+
+        if (clientsEntities == null)
+        {
+            clientsEntities = new Dictionary<ushort, GameObject>();
+        }
+      
+       
     }
 
-    public void ConnectPlayersToClient(ushort playerId, ushort toClientId)
-    {
-       // NetworkManager.Singleton.Server.Send(AddSpawnData(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerConnected)), toClientId);
-    }
-    
-    
+
+    #region Local Methods
+
     public void CreateServerPlayerData(ushort _id, string _username)
     {
         //Get Player Username
@@ -50,33 +51,77 @@ public class PlayerInstance : MonoBehaviour
         playerGo.name =
             $"Player {username}";
 
+        
+        
+        //Pour le joueur crée, ajoute tous les joueurs
+        foreach (ushort othersIds in clients.Keys)
+        {
+            ConnectPlayersToClient(_id,othersIds);
+        }
 
         //Add player to list
         clients.Add(_id, playerData);
         clientsEntities.Add(_id,playerGo);
+        
+        //Pour tous les joueurs existants, ajoute le joueur crée,
+        ConnectClientToPlayers(_id);
+
     }
- 
+    
+    public void ConnectClientToPlayers(ushort playerId)
+    {
+        PlayerData playerData = clients[playerId];
+        NetworkManager.Singleton.Server.SendToAll(playerData.AddData(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerConnected)));
+    }
 
+    public void ConnectPlayersToClient(ushort playerId, ushort toClientId)
+    {
+        PlayerData playerData = clients[playerId];
+        NetworkManager.Singleton.Server.Send(playerData.AddData(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerConnected)), toClientId);
+    }
+
+    public void SendPlayerError(ushort playerId ,string message)
+    {
+        Message errorMessage = Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.playerError);
+        errorMessage.AddString(message);
+        NetworkManager.Singleton.Server.Send(errorMessage,playerId);
+
+    }
+
+    public void DestroyPlayerInstance()
+    {
+     
+        foreach (GameObject clientsEntitiesValue in clientsEntities.Values)
+        {
+            Destroy(clientsEntitiesValue);
+        }
+        clients.Clear();
+        clientsEntities.Clear();
+        Destroy(this);
+    }
+
+    
+    public void DestroyPlayer(ushort _playerId)
+    {
+     
+        foreach (KeyValuePair<ushort,GameObject> clientsEntities in clientsEntities)
+        {
+            if (clientsEntities.Key == _playerId)
+            {
+                Destroy(clientsEntities.Value);
+                
+            }
+            
+           
+        }
+        clients.Remove(_playerId);
+        clientsEntities.Remove(_playerId);
+    }
+
+    
     #endregion
-    
-  
-    
-    #region Static Methods
-
-  
 
  
-
-
- 
-    
-    
-
-    #endregion
- 
-    
-   
-    
     
 
 }

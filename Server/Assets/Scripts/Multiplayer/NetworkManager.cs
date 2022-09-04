@@ -11,7 +11,8 @@ namespace Riptide.Demos.DedicatedServer
     public enum ServerToClientId : ushort
     {
         playerConnected = 1,
-        gameStarted = 2
+        gameStarted = 2,
+        playerError = 3,
     }
     public enum ClientToServerId : ushort
     {
@@ -107,10 +108,7 @@ namespace Riptide.Demos.DedicatedServer
 
         private void PlayerLeft(object sender, ClientDisconnectedEventArgs e)
         {
-            //Event for getting a player disconnected
-           
-            //Disconnect Client for all rooms players
-            
+            RoomInstance.RemovePlayer(e.Id);
         }
         #endregion
 

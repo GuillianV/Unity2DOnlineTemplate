@@ -24,11 +24,13 @@ public class GameLogic : MonoBehaviour
     #endregion
     
     public GameObject PlayerPrefab => playerPrefab;
+    public GameObject Map => map;
     public int SideValue => sideValue;
 
     [Header("Prefabs")]
     [SerializeField] private GameObject playerPrefab;
-
+    [SerializeField] private GameObject map;
+    
     [Header("Parameters")] 
      private int sideValue;
     
@@ -37,6 +39,10 @@ public class GameLogic : MonoBehaviour
     private void Awake()
     {
         Singleton = this;
+        if (Map == null)
+        {
+            this.map = GameObject.FindWithTag("Map");
+        }
     }
 
 

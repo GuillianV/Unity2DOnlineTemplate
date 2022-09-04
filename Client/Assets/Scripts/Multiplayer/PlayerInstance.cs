@@ -55,7 +55,11 @@ public class PlayerInstance : MonoBehaviour
     [MessageHandler((ushort)ServerToClientId.gameStarted)]
     private static void GameStarted(Message message)
     {
+        Debug.Log("<color=green>Game Started !</color>");
         //Change scene or whatever
+        
+        CreateAll();
+        
     }
     
     
@@ -180,7 +184,8 @@ public class PlayerInstance : MonoBehaviour
         if (instance.clients.ContainsKey(id))
         {
             PlayerData playerData = instance.clients[id];
-            GameObject go = Instantiate(GameLogic.Singleton.PlayerPrefab, Vector3.zero, Quaternion.identity);
+            GameObject go = Instantiate(GameLogic.Singleton.PlayerPrefab, Vector3.zero, Quaternion.identity, GameLogic.Singleton.Map.transform);
+            go.name = playerData.username;
             
             switch (GameLogic.Singleton.SideValue)
             {

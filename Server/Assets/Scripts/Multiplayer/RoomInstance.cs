@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Riptide.Demos.DedicatedServer;
@@ -42,8 +43,6 @@ public class RoomInstance : MonoBehaviour
     }
 
     
-    
-          
     #region MessageHandlers
 
     
@@ -70,51 +69,77 @@ public class RoomInstance : MonoBehaviour
         }
 
         PlayerInstance playerInstance = roomInstance.rooms[roomId];
-        playerInstance.CreateServerPlayerData(fromClientId, username);
-       
-        /*
-        
-        //Pour le joueur, ajoute tous les joueurs
-        foreach (PlayerData otherPlayerData in playerInstance.clients.Values)
+        if (!playerInstance.isFull)
         {
-            playerInstance.C
-            otherPlayerData.ConnectPlayersToClient(id);
-        }
-           
+            playerInstance.CreateServerPlayerData(fromClientId, username);
 
-        //Pour tous les joueurs, ajoute un joueur,
-      
-        player.ConnectClientToPlayers();
-    
-        
-        //Si le serveur est plein, on lance la partie
-        if (PlayersList.Count == NetworkManager.Singleton.Server.MaxClientCount)
+        }
+        else
         {
+            playerInstance.SendPlayerError(fromClientId,String.Format("{0} is full.",roomId));
+        }
+
+
+        if (GameLogic.CanStartBeforeRoomIsFull && playerInstance.clients.Count >= GameLogic.MinPlayersInRoom)
+        {
+
+            playerInstance.isFull = true;
+            playerInstance.roomStarted = true;
+            NetworkManager.Singleton.Server.SendToAll(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.gameStarted));
             
-            NetworkManager.Singleton.Server.SendToAll(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.startGame));
-
         }
-        */
+
     }
     
     
     #endregion
-    
-    
+
+    #region Static methods
+
     public static bool RoomExist(string roomId)
     {
-       return  Singleton.rooms.ContainsKey(roomId);
+        return  Singleton.rooms.ContainsKey(roomId);
     }
 
     public static string CreateRoom(string roomId)
     {
         if (!RoomExist(roomId))
         {
-            Singleton.rooms.Add(roomId,new PlayerInstance(roomId));
+            PlayerInstance playerInstance = Singleton.gameObject.AddComponent<PlayerInstance>();
+            playerInstance.roomId = roomId;
+            Singleton.rooms.Add(roomId,playerInstance);
         }
 
         return roomId;
     }
+
+    public static void DestroyRoom(string _roomId)
+    {
+        RoomInstance roomInstance = Singleton;
+        PlayerInstance playerInstance = roomInstance.rooms[_roomId];
+        playerInstance.DestroyPlayerInstance();
+        Debug.Log("Room "+_roomId+" has been destroyed");
+    }
+
+    public static void RemovePlayer(ushort _id)
+    {
+        RoomInstance roomInstance = Singleton;
+
+        foreach (PlayerInstance playerInstance in roomInstance.rooms.Values)
+        {
+            playerInstance.DestroyPlayer(_id);
+            
+            if (playerInstance.clients.Count == 0 && playerInstance.clientsEntities.Count == 0)
+            {
+                DestroyRoom(playerInstance.roomId);
+                
+               
+            }
+        }
+    }
+
+
+    #endregion
     
-    
+  
 }

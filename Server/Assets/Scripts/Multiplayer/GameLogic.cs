@@ -27,16 +27,22 @@ public class GameLogic : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     public GameObject PlayerPrefab => playerPrefab;
 
-    [SerializeField] private int maxPlayersInRoom;
-    public int MaxPlayersInRoom => maxPlayersInRoom;
-
-    [SerializeField] private int minPlayersInRoom;
-    public int MinPlayersInRoom => minPlayersInRoom;
-
-    [SerializeField] private bool canStartBeforeRoomIsFull;
-    public bool CanStartBeforeRoomIsFull => canStartBeforeRoomIsFull;
-
     
+    [Header("Rooms options")]
+    [SerializeField]
+    public int maxPlayersInRoom = 4;
+    [SerializeField]
+    public int minPlayersInRoom = 1;
+    [SerializeField]
+    public bool canStartBeforeRoomIsFull = true;
+    
+    
+    [SerializeField]
+    public static int MaxPlayersInRoom;
+    [SerializeField]
+    public static int MinPlayersInRoom;
+    [SerializeField]
+    public static bool CanStartBeforeRoomIsFull;
     
     
     #region Unity Events
@@ -44,6 +50,9 @@ public class GameLogic : MonoBehaviour
     private void Awake()
     {
         Singleton = this;
+        MaxPlayersInRoom = maxPlayersInRoom;
+        MinPlayersInRoom = minPlayersInRoom;
+        CanStartBeforeRoomIsFull = canStartBeforeRoomIsFull;
     }
 
     #endregion
