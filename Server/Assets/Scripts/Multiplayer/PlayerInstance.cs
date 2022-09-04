@@ -112,7 +112,6 @@ public class PlayerInstance : MonoBehaviour
         clientsEntities.Clear();
         Destroy(this);
     }
-
     
     public void DestroyPlayer(ushort _playerId)
     {

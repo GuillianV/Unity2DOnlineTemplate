@@ -11,7 +11,8 @@ namespace Riptide.Demos.DedicatedClient
     public enum ServerToClientId : ushort
     {
         playerConnected = 1,
-        gameStarted = 2
+        gameStarted = 2,
+        playerError = 3,
     }
     public enum ClientToServerId : ushort
     {

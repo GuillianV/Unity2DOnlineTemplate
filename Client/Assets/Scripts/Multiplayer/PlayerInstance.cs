@@ -63,6 +63,15 @@ public class PlayerInstance : MonoBehaviour
     }
     
     
+    //Start Game
+    [MessageHandler((ushort)ServerToClientId.playerError)]
+    private static void PlayerError(Message message)
+    {
+        Debug.Log("Error from server : <color=red>"+message.GetString()+"</color>");
+        //Return Menu
+        
+    }
+    
      
     //Get clients into player
     [MessageHandler((ushort)ServerToClientId.playerConnected)]

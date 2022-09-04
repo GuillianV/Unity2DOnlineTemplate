@@ -74,6 +74,16 @@ public class RoomInstance : MonoBehaviour
         {
             playerInstance.CreateServerPlayerData(fromClientId, username);
 
+            if (GameLogic.CanStartBeforeRoomIsFull && playerInstance.clients.Count >= GameLogic.MinPlayersInRoom)
+            {
+
+                playerInstance.isFull = true;
+                playerInstance.roomStarted = true;
+                NetworkManager.Singleton.Server.SendToAll(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.gameStarted));
+            
+            }
+
+            
         }
         else
         {
@@ -81,15 +91,7 @@ public class RoomInstance : MonoBehaviour
         }
 
 
-        if (GameLogic.CanStartBeforeRoomIsFull && playerInstance.clients.Count >= GameLogic.MinPlayersInRoom)
-        {
-
-            playerInstance.isFull = true;
-            playerInstance.roomStarted = true;
-            NetworkManager.Singleton.Server.SendToAll(Message.Create(MessageSendMode.reliable, (ushort)ServerToClientId.gameStarted));
-            
-        }
-
+     
     }
     
     
