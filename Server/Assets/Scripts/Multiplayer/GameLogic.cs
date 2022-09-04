@@ -27,6 +27,10 @@ public class GameLogic : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     public GameObject PlayerPrefab => playerPrefab;
 
+    [SerializeField] private GameObject map;
+    public GameObject Map => map;
+
+    
     
     [Header("Rooms options")]
     [SerializeField]

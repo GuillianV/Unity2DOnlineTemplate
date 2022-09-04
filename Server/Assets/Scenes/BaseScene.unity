@@ -364,6 +364,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 326eb2143f6708944831ed3ca4bd3b0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roomCounter: 0
 --- !u!114 &558054604
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -377,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerPrefab: {fileID: 4812822551609897266, guid: 75df5a64ec9704d4eb905b89e76da117, type: 3}
+  map: {fileID: 4556155785967896942, guid: d06eaae4f3dd4994ca096ca6dd8327cd, type: 3}
   maxPlayersInRoom: 4
   minPlayersInRoom: 1
   canStartBeforeRoomIsFull: 1

@@ -19,6 +19,9 @@ public class PlayerInstance : MonoBehaviour
     public string roomId;
     public bool roomStarted;
     public bool isFull;
+    public int roomCounter;
+
+    public GameObject Map;
     
 
     private void Awake()
@@ -32,10 +35,20 @@ public class PlayerInstance : MonoBehaviour
         {
             clientsEntities = new Dictionary<ushort, GameObject>();
         }
-      
        
     }
 
+    public void StartPlayerInstancee(string _roomId, int _roomCounter)
+    {
+
+        this.roomId = _roomId;
+        this.roomCounter = _roomCounter;
+        if (Map == null)
+        {
+            Map = Instantiate(GameLogic.Singleton.Map, new Vector3(0, 0, roomCounter), Quaternion.identity);
+        }
+    }
+    
 
     #region Local Methods
 
@@ -47,7 +60,7 @@ public class PlayerInstance : MonoBehaviour
         
         PlayerData playerData = PlayerData.FactoryPlayerData(_id,username,roomId,clients.Count);
         //Create Player
-        GameObject playerGo = Instantiate(GameLogic.Singleton.PlayerPrefab, Vector3.zero, Quaternion.identity);
+        GameObject playerGo = Instantiate(GameLogic.Singleton.PlayerPrefab, Vector3.zero, Quaternion.identity,Map.transform);
         playerGo.name =
             $"Player {username}";
 

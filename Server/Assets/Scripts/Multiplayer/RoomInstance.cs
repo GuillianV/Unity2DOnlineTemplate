@@ -31,7 +31,8 @@ public class RoomInstance : MonoBehaviour
     
 
     #endregion
-    
+
+    public int roomCounter = 0;
     
     private void Awake()
     {
@@ -106,7 +107,7 @@ public class RoomInstance : MonoBehaviour
         if (!RoomExist(roomId))
         {
             PlayerInstance playerInstance = Singleton.gameObject.AddComponent<PlayerInstance>();
-            playerInstance.roomId = roomId;
+            playerInstance.StartPlayerInstancee(roomId,GetRoomCounter());
             Singleton.rooms.Add(roomId,playerInstance);
         }
 
@@ -138,6 +139,14 @@ public class RoomInstance : MonoBehaviour
         }
     }
 
+    public static int GetRoomCounter()
+    {
+        RoomInstance roomInstance = Singleton;
+        roomInstance.roomCounter += 10;
+        return Singleton.roomCounter;
+    }
+    
+    
 
     #endregion
     
